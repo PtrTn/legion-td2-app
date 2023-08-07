@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Dto\Unit;
 use App\Repositories\UnitRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class UnitFormType extends AbstractType
@@ -21,12 +21,15 @@ final class UnitFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $units = $this->unitRepository->getDefensiveUnits();
-        dump($units);
 
-        $builder
-            ->add('task', TextType::class)
-            ->add('dueDate', DateType::class)
-            ->add('save', SubmitType::class, ['label' => 'Create Task']);
+        $builder->add('category', ChoiceType::class, [
+            'choices' => $units,
+            'choice_value' => 'unitId',
+            'choice_label' => fn(?Unit $unit): string => $unit ? $unit->name : 'Unknown',
+            'multiple' => true,
+        ]);
+
+        $builder->add('save', SubmitType::class, ['label' => 'What should I build?']);
     }
 
 }
