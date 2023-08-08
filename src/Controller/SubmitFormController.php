@@ -12,10 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class SubmitFormController extends AbstractController
 {
-    #[Route('/success', name: 'form_submit', methods: 'POST')]
+    #[Route('/', name: 'form_submit', methods: 'POST')]
     public function number(Request $request): Response
     {
-        $form = $this->createForm(UnitFormType::class, null, ['action' => $this->generateUrl('form_submit')]);
+        $form = $this->createForm(UnitFormType::class);
 
         $form->handleRequest($request);
 
@@ -26,8 +26,8 @@ final class SubmitFormController extends AbstractController
             return $this->redirectToRoute('form_show');
         }
 
-        $data = $form->getData();
+        $selectedUnits = $form->getData();
 
-        return $this->render('form_submit.twig', ['data' => $data]);
+        return $this->render('form_submit.twig', ['data' => $selectedUnits]);
     }
 }

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class ShowFormController extends AbstractController
 {
-    #[Route('/', name: 'form_show')]
+    #[Route('/', name: 'form_show', methods: 'GET')]
     public function number(): Response
     {
         $form = $this->createForm(UnitFormType::class, null, ['action' => $this->generateUrl('form_submit')]);
