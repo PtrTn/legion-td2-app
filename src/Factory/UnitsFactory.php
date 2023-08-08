@@ -12,10 +12,14 @@ use Exception;
 
 final class UnitsFactory
 {
+    public function __construct(private readonly string $projectRoot)
+    {
+    }
+
     /** @return Unit[] */
     public function create(): array
     {
-        $unitsJson = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '..'. DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data/units.json');
+        $unitsJson = file_get_contents($this->projectRoot . DIRECTORY_SEPARATOR . 'data/units.json');
         $unitsData = json_decode($unitsJson, true);
         $units = [];
         foreach ($unitsData as $unitData) {

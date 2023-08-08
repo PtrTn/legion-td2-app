@@ -10,14 +10,14 @@ use Exception;
 
 final class WavesFactory
 {
-    public function __construct(public readonly UnitsRepository $unitsRepository)
+    public function __construct(public readonly UnitsRepository $unitsRepository, private readonly string $projectRoot)
     {
     }
 
     /** @return Wave[] */
     public function create(): array
     {
-        $wavesJson = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . '..'. DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data/waves.json');
+        $wavesJson = file_get_contents($this->projectRoot . DIRECTORY_SEPARATOR . 'data/waves.json');
         $wavesData = json_decode($wavesJson, true);
         $waves = [];
         foreach ($wavesData as $waveData) {
