@@ -22,14 +22,19 @@ final class UnitFormType extends AbstractType
     {
         $units = $this->unitRepository->getDefensiveUnits();
 
-        $builder->add('category', ChoiceType::class, [
+        $builder->add('units', ChoiceType::class, [
+            'label' => 'Select what units you can build',
             'choices' => $units,
             'choice_value' => 'unitId',
             'choice_label' => fn(?Unit $unit): string => $unit ? $unit->name : 'Unknown',
+            'choice_attr' => fn(?Unit $unit): array => $unit ? ['imagePath' => $unit->iconPath] : [],
             'multiple' => true,
         ]);
 
-        $builder->add('save', SubmitType::class, ['label' => 'What should I build?']);
+        $builder->add('save', SubmitType::class, [
+            'label' => 'What should I build?',
+            'attr' => ['class' => 'btn btn-primary btn-lg'],
+        ]);
     }
 
 }

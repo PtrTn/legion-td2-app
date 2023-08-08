@@ -1,5 +1,38 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form(form) }}
+    {{ form_start(form) }}
+    <div>
+        {{ form_errors(form) }}
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center">{{ form_label(form.units) }}</h1>
+            <fieldset id="{{ form.units.vars.id }}">
+                <div class="d-flex flex-row flex-wrap">
+                    {% for choice in form.units.vars.choices %}
+                        <div>
+                            <input type="checkbox" id="{{ choice.value }}" name="{{ field_name(form.units) }}"/>
+                            <label for="{{ choice.value }}" class="d-flex flex-column justify-content-center align-items-center">
+                                <img class="img-thumbnail" alt="{{ choice.data.name }}" src="https://cdn.legiontd2.com/{{ choice.data.iconPath }}" />
+                                <span class="text-center">{{ choice.data.name }}</span>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </fieldset>
+
+            <div class="d-flex justify-content-center mt-4">
+                {{ form_widget(form.save) }}
+            </div>
+
+            <small>{{ form_help(form.units) }}</small>
+
+            <div class="form-error">
+                {{ form_errors(form.units) }}
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
 {% endblock %}
