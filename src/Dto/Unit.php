@@ -18,6 +18,8 @@ final class Unit
         public readonly AttackType $attackType,
         public readonly ArmorType $armorType,
         public readonly UnitType $unitType,
+        public string $legionId,
+        public ?int $goldCost,
     )
     {
 

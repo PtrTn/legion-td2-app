@@ -40,7 +40,9 @@ final class UnitsFactory
             empty($unitData['iconPath']) ||
             empty($unitData['attackType']) ||
             empty($unitData['armorType']) ||
-            empty($unitData['categoryClass'])
+            empty($unitData['categoryClass']) ||
+            empty($unitData['legionId']) ||
+            !isset($unitData['goldCost'])
         ) {
             throw new Exception(sprintf('Missing unit data for "%s"', $unitData['unitId']));
         }
@@ -63,6 +65,8 @@ final class UnitsFactory
             AttackType::fromValue($unitData['attackType']),
             ArmorType::fromValue($unitData['armorType']),
             $unitType,
+            $unitData['legionId'],
+            $unitData['goldCost'] ? (int) $unitData['goldCost'] : null,
         );
     }
 }
