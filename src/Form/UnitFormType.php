@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Dto\Unit;
-use App\Repositories\UnitRepository;
+use App\Repository\UnitsRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 final class UnitFormType extends AbstractType
 {
     public function __construct(
-        private readonly UnitRepository $unitRepository,
+        private readonly UnitsRepository $unitRepository,
     ) {
     }
 

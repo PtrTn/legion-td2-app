@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories;
+namespace App\Repository;
 
 use App\Dto\Unit;
 use App\Enum\UnitType;
 use App\Factory\UnitsFactory;
+use Exception;
 
-final class UnitRepository
+final class UnitsRepository
 {
     public function __construct(private readonly UnitsFactory $unitsFactory)
     {
@@ -33,5 +34,18 @@ final class UnitRepository
         usort($units, fn(Unit $unitA, Unit $unitB) => $unitA->goldCost <=> $unitB->goldCost);
 
         return $units;
+    }
+
+    public function getById(string $unitId): Unit
+    {
+        $units = $this->unitsFactory->create();
+
+        foreach ($units as $unit) {
+            if ($unit->unitId === $unitId) {
+                return $unit;
+            }
+        }
+
+        throw new Exception(sprintf('Unable to find unit by id "%s"', $unitId));
     }
 }
