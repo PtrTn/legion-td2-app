@@ -19,4 +19,22 @@ final class Counter
     {
         return $this->attackModifier + $this->defenseModifier;
     }
+
+    public function getFormattedAttackModifier(): string
+    {
+        if ($this->attackModifier > 0) {
+            return '+' . $this->attackModifier;
+        }
+
+        return (string) $this->attackModifier;
+    }
+
+    public function formattedDefenseModifier(): string
+    {
+        if ($this->defenseModifier > 0) {
+            return '+' . $this->defenseModifier;
+        }
+
+        return (string) $this->defenseModifier;
+    }
 }

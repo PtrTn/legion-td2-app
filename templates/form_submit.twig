@@ -1,6 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Frank didit did it</h1>
-    {{ dump(waveCounters) }}
+    <h1>You can build the following counters</h1>
+    {% for waveCounter in waveCounters %}
+        <h2>Wave {{ waveCounter.wave.waveNumber }}</h2>
+        <div class="d-flex">
+            {% for counter in waveCounter.counters %}
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <img class="img-thumbnail" alt="{{ counter.defensiveUnit.name }}" src="https://cdn.legiontd2.com/{{ counter.defensiveUnit.iconPath }}" />
+                    <span class="text-center">{{ counter.defensiveUnit.name }}</span>
+                    <span>
+                        <img width="12px" height="12px" src="https://static.wikia.nocookie.net/legion-td-2/images/e/e8/Role_dps.png"/> {{ counter.formattedAttackModifier }}
+                        <img width="12px" height="12px" src="https://static.wikia.nocookie.net/legion-td-2/images/4/43/Role_tank.png"/> {{ counter.formattedDefenseModifier }}
+                    </span>
+                </div>
+            {% else %}
+                <span>No available counters</span>
+            {% endfor %}
+        </div>
+    {% endfor %}
 {% endblock %}
