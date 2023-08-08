@@ -5,15 +5,24 @@
         <div class="row">
             <h1>You can build the following counters</h1>
         </div>
-        <div class="row gy-2">
+        <div class="row gy-3 justify-content-around">
             {% for waveCounter in waveCounters %}
-                <div class="col-6">
-                        <div class="row">
-                            <h2>Wave {{ waveCounter.wave.waveNumber }}</h2>
+                <div class="col-5 px-3">
+                        <div class="row pb-4">
+                            <div class="row align-items-center pb-2">
+                                <div class="col-auto">
+                                    <h2 class="mb-0">Wave {{ waveCounter.wave.waveNumber }}: {{ waveCounter.wave.unit.name }}</h2>
+                                </div>
+                                <div class="col">
+                                    <div>
+                                        <img width="30px" height="30px" alt="{{ waveCounter.wave.unit.description }}" src="https://cdn.legiontd2.com/{{ waveCounter.wave.unit.iconPath }}" />
+                                    </div>
+                                </div>
+                            </div>
                             {% for counter in waveCounter.counters %}
-                                <div class="col-2 p-1">
+                                <div class="col-3">
                                     <div class="d-flex flex-column align-items-center">
-                                        <img class="img-thumbnail" alt="{{ counter.defensiveUnit.name }}" src="https://cdn.legiontd2.com/{{ counter.defensiveUnit.iconPath }}" />
+                                        <img class="img-thumbnail" alt="{{ counter.defensiveUnit.description }}" src="https://cdn.legiontd2.com/{{ counter.defensiveUnit.iconPath }}" />
                                         <span class="text-center mt-1">{{ counter.defensiveUnit.name }}</span>
                                         <span>
                                             <img width="12px" height="12px" src="https://static.wikia.nocookie.net/legion-td-2/images/e/e8/Role_dps.png"/>
