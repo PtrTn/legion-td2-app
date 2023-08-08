@@ -19,9 +19,18 @@ final class UnitRepository
     {
         $units = $this->unitsFactory->create();
 
-        $units = array_filter($units, fn(Unit $unit) => $unit->unitType === UnitType::Defense && $unit->goldCost !== null);
+        $units = array_filter($units, function (Unit $unit) {
+            if($unit->unitType !== UnitType::Defense) {
+                return false;
+            }
+            if ($unit->goldCost === null) {
+                return false;
+            }
 
-        usort($units, fn(Unit $unitA, Unit $unitB) => [$unitA->legionId, $unitA->goldCost] <=> [$unitB->legionId, $unitB->goldCost]);
+            return $unit->isBaseUnit();
+        });
+
+        usort($units, fn(Unit $unitA, Unit $unitB) => $unitA->goldCost <=> $unitB->goldCost);
 
         return $units;
     }

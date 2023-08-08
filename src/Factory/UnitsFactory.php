@@ -42,7 +42,8 @@ final class UnitsFactory
             empty($unitData['armorType']) ||
             empty($unitData['categoryClass']) ||
             empty($unitData['legionId']) ||
-            !isset($unitData['goldCost'])
+            !isset($unitData['goldCost']) ||
+            !isset($unitData['upgradesFrom'])
         ) {
             throw new Exception(sprintf('Missing unit data for "%s"', $unitData['unitId']));
         }
@@ -67,6 +68,7 @@ final class UnitsFactory
             $unitType,
             $unitData['legionId'],
             $unitData['goldCost'] ? (int) $unitData['goldCost'] : null,
+            $unitData['upgradesFrom']
         );
     }
 }

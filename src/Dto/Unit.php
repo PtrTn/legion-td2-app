@@ -20,9 +20,14 @@ final class Unit
         public readonly UnitType $unitType,
         public string $legionId,
         public ?int $goldCost,
+        public array $upgradesFrom,
     )
     {
 
     }
 
+    public function isBaseUnit(): bool
+    {
+       return empty($this->upgradesFrom);
+    }
 }
