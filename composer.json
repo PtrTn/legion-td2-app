@@ -1,4 +1,6 @@
 {
+    "name": "ptrtn/legion-td2-app",
+    "description": "Application that helps you in making choices in the Legion TD 2 game",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
