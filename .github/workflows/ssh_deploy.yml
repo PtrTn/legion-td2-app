@@ -47,7 +47,17 @@ jobs:
         with:
           name: app
           if-no-files-found: error
-          path: ./
+          path: |
+            ./assets
+            ./bin
+            ./config
+            ./public
+            ./src
+            ./templates
+            ./vendor
+            ./importmap.php
+            ./composer.json
+            ./composer.lock
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -66,3 +76,18 @@ jobs:
           remote_host: ${{ secrets.REMOTE_HOST }}
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.SERVER_SSH_KEY }}
+      - name: ls -a via ssh
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: ${{ secrets.REMOTE_TARGET }}/bin/console cache:warmup
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          privateKey: ${{ secrets.SERVER_SSH_KEY }}
+
+# Todo: create ./var
+# Todo: permissions for www-data?
+# Todo: cache warmup
+# Todo: add api key to .env
+# Todo: keep previous releases
+# Todo: make bin/console executable
+# Todo: run bin/console asset-map:compile
