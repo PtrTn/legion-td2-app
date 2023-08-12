@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Dto\Counter;
 use App\Dto\Fighter;
+use App\Dto\FighterCounters;
 use App\Dto\WaveCounters;
 use App\Form\UnitFormType;
 use App\Repository\EffectivenessRepository;
@@ -54,18 +55,18 @@ final class SubmitFormController extends AbstractController
         throw new Exception('Unable to handle request');
     }
 
-    /** @param Fighter[] $selectedUnits */
-    private function showFighterAdvice(array $selectedUnits): Response
+    /** @param Fighter[] $selectedFighters */
+    private function showFighterAdvice(array $selectedFighters): Response
     {
         $waves = $this->wavesRepository->getAll();
         $waveCounters = [];
         foreach ($waves as $wave) {
             $counters = [];
-            foreach ($selectedUnits as $selectedUnit) {
-                $attackModifier = $this->effectivenessRepository->getEffectiveness($selectedUnit->attackType, $wave->unit->armorType);
-                $defenseModifier = $this->effectivenessRepository->getEffectiveness($wave->unit->attackType, $selectedUnit->armorType);
+            foreach ($selectedFighters as $selectedFighter) {
+                $attackModifier = $this->effectivenessRepository->getEffectiveness($selectedFighter->attackType, $wave->unit->armorType);
+                $defenseModifier = $this->effectivenessRepository->getEffectiveness($wave->unit->attackType, $selectedFighter->armorType);
                 if ($attackModifier + $defenseModifier > 0) {
-                    $counters[] = new Counter($selectedUnit, $wave->unit, $attackModifier, $defenseModifier);
+                    $counters[] = new Counter($selectedFighter, $wave->unit, $attackModifier, $defenseModifier);
                 }
             }
 
@@ -76,21 +77,25 @@ final class SubmitFormController extends AbstractController
         return $this->render('fighter_advice.twig', ['waveCounters' => $waveCounters]); // todo, show per fighter instead.
     }
 
-    /** @param Fighter[] $selectedUnits */
-    private function showMercenaryAdvice(array $selectedUnits): Response
+    /** @param Fighter[] $selectedFighters */
+    private function showMercenaryAdvice(array $selectedFighters): Response
     {
         $mercenaries = $this->unitsRepository->getMercenariesSortedByMythiumCost();
-        foreach ($selectedUnits as $selectedUnit) {
+        $fighterCounters = [];
+        foreach ($selectedFighters as $selectedFighter) {
+            $counters = [];
             foreach ($mercenaries as $mercenary) {
-                $attackModifier = $this->effectivenessRepository->getEffectiveness($mercenary->attackType, $selectedUnit->armorType);
-                $defenseModifier = $this->effectivenessRepository->getEffectiveness($selectedUnit->attackType, $mercenary->armorType);
+                $attackModifier = $this->effectivenessRepository->getEffectiveness($mercenary->attackType, $selectedFighter->armorType);
+                $defenseModifier = $this->effectivenessRepository->getEffectiveness($selectedFighter->attackType, $mercenary->armorType);
                 if ($attackModifier + $defenseModifier > 0) {
-                    $counters[] = new Counter($mercenary, $selectedUnit, $attackModifier, $defenseModifier);
+                    $counters[] = new Counter($mercenary, $selectedFighter, $attackModifier, $defenseModifier);
                 }
             }
+
+            usort($counters, fn(Counter $counterA, Counter $counterB) => $counterB->getTotalModifier() <=> $counterA->getTotalModifier());
+            $fighterCounters[] = new FighterCounters($selectedFighter, $counters);
         }
 
-        dump($counters);
-        return $this->render('mercenary_advice.twig', ['counters' => $counters]);
+        return $this->render('mercenary_advice.twig', ['fighterCounters' => $fighterCounters]);
     }
 }
