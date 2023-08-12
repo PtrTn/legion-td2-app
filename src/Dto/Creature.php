@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
-use App\Enum\ArmorType;
-use App\Enum\AttackType;
-
-final class Creature
+final class Creature extends Unit
 {
-    public function __construct(
-        public string $unitId,
-        public string $name,
-        public string $description,
-        public string $iconPath,
-        public readonly AttackType $attackType,
-        public readonly ArmorType $armorType
-    )
+    public function __construct(Unit $unit)
     {
+        parent::__construct(
+            $unit->unitId,
+            $unit->name,
+            $unit->description,
+            $unit->iconPath,
+            $unit->attackType,
+            $unit->armorType,
+        );
     }
 }

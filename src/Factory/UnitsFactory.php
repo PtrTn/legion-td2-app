@@ -7,6 +7,7 @@ namespace App\Factory;
 use App\Dto\Creature;
 use App\Dto\Fighter;
 use App\Dto\Mercenary;
+use App\Dto\Unit;
 use App\Dto\Units;
 use App\Enum\ArmorType;
 use App\Enum\AttackType;
@@ -26,7 +27,7 @@ final class UnitsFactory
         $unitsData = json_decode($unitsJson, true);
         $units = Units::Create();
         foreach ($unitsData as $unitData) {
-            $unit = $this->createUnit($unitData);
+            $unit = $this->createTypedUnit($unitData);
             if ($unit !== null) {
                 $units->add($unit);
             }
@@ -35,7 +36,7 @@ final class UnitsFactory
         return $units;
     }
 
-    private function createUnit(array $unitData): Fighter|Creature|Mercenary|null
+    private function createTypedUnit(array $unitData): Fighter|Creature|Mercenary|null
     {
         if (empty($unitData['unitId'])) {
             throw new Exception('Missing data for unknown unit');
@@ -68,12 +69,7 @@ final class UnitsFactory
 
     private function createFighter(string $unitId, array $unitData): ?Fighter
     {
-        if (empty($unitData['name']) ||
-            empty($unitData['description']) ||
-            empty($unitData['iconPath']) ||
-            empty($unitData['attackType']) ||
-            empty($unitData['armorType']) ||
-            empty($unitData['categoryClass']) ||
+        if (
             !isset($unitData['goldCost']) ||
             !isset($unitData['upgradesFrom'])
         ) {
@@ -84,18 +80,13 @@ final class UnitsFactory
             return null;
         }
 
-        if ($unitData['categoryClass'] === 'Special') {
+        $unit = $this->createUnit($unitId, $unitData);
+        if ($unit === null) {
             return null;
         }
 
         return new Fighter(
-            $unitId,
-            $unitData['name'],
-            $unitData['description'],
-            $unitData['iconPath'],
-            AttackType::fromValue($unitData['attackType']),
-            ArmorType::fromValue($unitData['armorType']),
-            $unitData['legionId'],
+            $unit,
             (int) $unitData['goldCost'],
             $unitData['upgradesFrom']
         );
@@ -103,57 +94,55 @@ final class UnitsFactory
 
     private function createCreature(string $unitId, array $unitData): ?Creature
     {
-        if (empty($unitData['name']) ||
-            empty($unitData['description']) ||
-            empty($unitData['iconPath']) ||
-            empty($unitData['attackType']) ||
-            empty($unitData['armorType']) ||
-            empty($unitData['categoryClass'])
-        ) {
-            throw new Exception(sprintf('Missing unit data for "%s"', $unitId));
-        }
-
-        if ($unitData['categoryClass'] === 'Special') {
+        $unit = $this->createUnit($unitId, $unitData);
+        if ($unit === null) {
             return null;
         }
-
-        return new Creature(
-            $unitId,
-            $unitData['name'],
-            $unitData['description'],
-            $unitData['iconPath'],
-            AttackType::fromValue($unitData['attackType']),
-            ArmorType::fromValue($unitData['armorType'])
-        );
+        return new Creature($unit);
     }
 
     private function createMercenary(string $unitId, array $unitData): ?Mercenary
     {
-        if (empty($unitData['name']) ||
-            empty($unitData['description']) ||
-            empty($unitData['iconPath']) ||
-            empty($unitData['attackType']) ||
-            empty($unitData['armorType']) ||
-            empty($unitData['categoryClass'] ||
-            !isset($unitData['mythiumCost']))
-        ) {
+        if (!isset($unitData['mythiumCost']))
+        {
             throw new Exception(sprintf('Missing unit data for "%s"', $unitId));
-        }
-
-        if ($unitData['categoryClass'] === 'Special') {
-            return null;
         }
 
         if ($unitId === 'giant_snail_unit_id') {
             return null;
         }
 
+        $unit = $this->createUnit($unitId, $unitData);
+        if ($unit === null) {
+            return null;
+        }
+
         return new Mercenary(
+            $unit,
+            (int) $unitData['mythiumCost']
+        );
+    }
+
+    private function createUnit(string $unitId, array $unitData): ?Unit
+    {
+        if (empty($unitData['name']) ||
+            empty($unitData['description']) ||
+            empty($unitData['iconPath']) ||
+            empty($unitData['attackType']) ||
+            empty($unitData['armorType'])
+        ) {
+            throw new Exception(sprintf('Missing unit data for "%s"', $unitId));
+        }
+
+        if ($unitData['categoryClass'] === 'Special') {
+            return null;
+        }
+
+        return new Unit(
             $unitId,
             $unitData['name'],
             $unitData['description'],
             $unitData['iconPath'],
-            (int) $unitData['mythiumCost'],
             AttackType::fromValue($unitData['attackType']),
             ArmorType::fromValue($unitData['armorType'])
         );

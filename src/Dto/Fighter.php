@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
-use App\Enum\ArmorType;
-use App\Enum\AttackType;
-
-final class Fighter
+final class Fighter extends Unit
 {
     public function __construct(
-        public string $unitId,
-        public string $name,
-        public string $description,
-        public string $iconPath,
-        public readonly AttackType $attackType,
-        public readonly ArmorType $armorType,
-        public string $legionId,
+        Unit $unit,
         public ?int $goldCost,
         public array $upgradesFrom,
     )
     {
+        parent::__construct(
+            $unit->unitId,
+            $unit->name,
+            $unit->description,
+            $unit->iconPath,
+            $unit->attackType,
+            $unit->armorType,
+        );
     }
 
     public function isBaseUnit(): bool

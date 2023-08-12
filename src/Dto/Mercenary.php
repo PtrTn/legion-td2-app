@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
-use App\Enum\ArmorType;
-use App\Enum\AttackType;
-
-final class Mercenary
+final class Mercenary extends Unit
 {
     public function __construct(
-        public string $unitId,
-        public string $name,
-        public string $description,
-        public string $iconPath,
+        Unit $unit,
         public int $mythiumCost,
-        public readonly AttackType $attackType,
-        public readonly ArmorType $armorType
     )
     {
+        parent::__construct(
+            $unit->unitId,
+            $unit->name,
+            $unit->description,
+            $unit->iconPath,
+            $unit->attackType,
+            $unit->armorType,
+        );
     }
 }
