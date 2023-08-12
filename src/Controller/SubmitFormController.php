@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Dto\Counter;
+use App\Dto\Unit;
 use App\Dto\WaveCounters;
 use App\Form\UnitFormType;
 use App\Repository\EffectivenessRepository;
 use App\Repository\WavesRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,17 +40,30 @@ final class SubmitFormController extends AbstractController
             return $this->redirectToRoute('form_show');
         }
 
-        $defensiveUnits = $form->getData()['units'] ?? [];
-        $waves = $this->wavesRepository->getAll();
+        $selectedUnits = $form->getData()['units'] ?? [];
 
+        if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'fighterAdvice') {
+            return $this->showFighterAdvice($selectedUnits);
+        }
+        if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'mercenaryAdvice') {
+            return $this->showMercenaryAdvice($selectedUnits);
+        }
+
+        throw new Exception('Unable to handle request');
+    }
+
+    /** @param Unit[] $selectedUnits */
+    private function showFighterAdvice(array $selectedUnits): Response
+    {
+        $waves = $this->wavesRepository->getAll();
         $waveCounters = [];
         foreach ($waves as $wave) {
             $counters = [];
-            foreach ($defensiveUnits as $defensiveUnit) {
-                $attackModifier = $this->effectivenessRepository->getEffectiveness($defensiveUnit->attackType, $wave->unit->armorType);
-                $defenseModifier = $this->effectivenessRepository->getEffectiveness($wave->unit->attackType, $defensiveUnit->armorType);
+            foreach ($selectedUnits as $selectedUnit) {
+                $attackModifier = $this->effectivenessRepository->getEffectiveness($selectedUnit->attackType, $wave->unit->armorType);
+                $defenseModifier = $this->effectivenessRepository->getEffectiveness($wave->unit->attackType, $selectedUnit->armorType);
                 if ($attackModifier + $defenseModifier > 0) {
-                    $counters[] = new Counter($defensiveUnit, $wave->unit, $attackModifier, $defenseModifier);
+                    $counters[] = new Counter($selectedUnit, $wave->unit, $attackModifier, $defenseModifier);
                 }
             }
 
@@ -56,6 +71,14 @@ final class SubmitFormController extends AbstractController
             $waveCounters[] = new WaveCounters($wave, $counters);
         }
 
-        return $this->render('form_submit.twig', ['waveCounters' => $waveCounters]);
+        return $this->render('fighter_advice.twig', ['waveCounters' => $waveCounters]); // todo, show per fighter instead.
+    }
+
+    /** @param Unit[] $selectedUnits */
+    private function showMercenaryAdvice(array $selectedUnits): Response
+    {
+
+
+        return $this->render('mercenary_advice.twig', []);
     }
 }

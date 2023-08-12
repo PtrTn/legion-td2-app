@@ -31,8 +31,13 @@ final class UnitFormType extends AbstractType
             'multiple' => true,
         ]);
 
-        $builder->add('save', SubmitType::class, [
-            'label' => 'What should I build?',
+        $builder->add('fighterAdvice', SubmitType::class, [
+            'label' => 'Find best fighters',
+            'attr' => ['class' => 'btn btn-primary btn-lg'],
+        ]);
+
+        $builder->add('mercenaryAdvice', SubmitType::class, [
+            'label' => 'Find best mercenaries',
             'attr' => ['class' => 'btn btn-primary btn-lg'],
         ]);
     }

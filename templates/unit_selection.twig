@@ -24,8 +24,13 @@
                     </div>
                 </fieldset>
 
-                <div class="d-flex justify-content-center mt-4">
-                    {{ form_widget(form.save) }}
+                <div class="row justify-content-center mt-4">
+                    <div class="col-3">
+                        {{ form_widget(form.fighterAdvice) }}
+                    </div>
+                    <div class="col-3">
+                        {{ form_widget(form.mercenaryAdvice) }}
+                    </div>
                 </div>
 
                 <small>{{ form_help(form.units) }}</small>

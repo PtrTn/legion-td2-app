@@ -16,7 +16,7 @@ final class ShowFormController extends AbstractController
     {
         $form = $this->createForm(UnitFormType::class, null, ['action' => $this->generateUrl('form_submit')]);
 
-        return $this->render('form_show.twig', [
+        return $this->render('unit_selection.twig', [
             'form' => $form,
         ]);
     }
