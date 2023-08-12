@@ -6,7 +6,7 @@ namespace App\Enum;
 
 enum UnitType
 {
-    case Defense;
-    case Offense;
+    case Fighter;
+    case Mercenary;
     case Wave;
 }

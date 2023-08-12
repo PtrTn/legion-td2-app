@@ -58,8 +58,8 @@ final class UnitsFactory
 
         $unitType = match ($unitData['legionId']) {
             'creature_legion_id' => UnitType::Wave,
-            'nether_legion_id' => UnitType::Offense,
-            default => UnitType::Defense,
+            'nether_legion_id' => UnitType::Mercenary,
+            default => UnitType::Fighter,
         };
 
         return new Unit(

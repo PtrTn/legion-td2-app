@@ -16,12 +16,12 @@ final class UnitsRepository
     }
 
     /** @return Unit[] */
-    public function getDefensiveUnits(): array
+    public function getFighters(): array
     {
         $units = $this->unitsFactory->create();
 
         $units = array_filter($units, function (Unit $unit) {
-            if($unit->unitType !== UnitType::Defense) {
+            if($unit->unitType !== UnitType::Fighter) {
                 return false;
             }
             if ($unit->goldCost === null) {
