@@ -37,4 +37,14 @@ final class Counter
 
         return (string) $this->defenseModifier;
     }
+
+    public function formattedTotalModifier(): string
+    {
+        $modifier = $this->getTotalModifier();
+        if ($modifier > 0) {
+            return '+' . $modifier;
+        }
+
+        return (string) $modifier;
+    }
 }
