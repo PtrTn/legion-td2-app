@@ -1,6 +1,9 @@
 name: Deployer
 on:
   workflow_dispatch:
+  push:
+    branches: [master]
+concurrency: production_environment
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -30,5 +33,5 @@ jobs:
       - name: Deploy
         uses: deployphp/action@v1
         with:
-          private-key: ${{ secrets.PRIVATE_KEY }}
+          private-key: ${{ secrets.SERVER_SSH_KEY }}
           dep: deploy
