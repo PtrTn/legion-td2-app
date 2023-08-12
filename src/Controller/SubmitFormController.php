@@ -81,9 +81,16 @@ final class SubmitFormController extends AbstractController
     {
         $mercenaries = $this->unitsRepository->getMercenariesSortedByMythiumCost();
         foreach ($selectedUnits as $selectedUnit) {
-
+            foreach ($mercenaries as $mercenary) {
+                $attackModifier = $this->effectivenessRepository->getEffectiveness($mercenary->attackType, $selectedUnit->armorType);
+                $defenseModifier = $this->effectivenessRepository->getEffectiveness($selectedUnit->attackType, $mercenary->armorType);
+                if ($attackModifier + $defenseModifier > 0) {
+                    $counters[] = new Counter($mercenary, $selectedUnit, $attackModifier, $defenseModifier);
+                }
+            }
         }
 
-        return $this->render('mercenary_advice.twig', []);
+        dump($counters);
+        return $this->render('mercenary_advice.twig', ['counters' => $counters]);
     }
 }

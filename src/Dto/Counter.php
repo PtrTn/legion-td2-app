@@ -7,8 +7,8 @@ namespace App\Dto;
 final class Counter
 {
     public function __construct(
-        public readonly Fighter $defensiveUnit,
-        public readonly Creature $waveUnit,
+        public readonly Unit $attackingUnit,
+        public readonly Unit $defendingUnit,
         public readonly int $attackModifier,
         public readonly int $defenseModifier,
     )
