@@ -35,3 +35,5 @@ jobs:
         with:
           private-key: ${{ secrets.SERVER_SSH_KEY }}
           dep: deploy
+        options:
+          keep_releases: 5
