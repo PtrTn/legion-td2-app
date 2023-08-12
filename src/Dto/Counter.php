@@ -8,7 +8,7 @@ final class Counter
 {
     public function __construct(
         public readonly Fighter $defensiveUnit,
-        public readonly Fighter $waveUnit,
+        public readonly Creature $waveUnit,
         public readonly int $attackModifier,
         public readonly int $defenseModifier,
     )

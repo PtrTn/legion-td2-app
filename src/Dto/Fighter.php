@@ -21,7 +21,6 @@ final class Fighter
         public array $upgradesFrom,
     )
     {
-
     }
 
     public function isBaseUnit(): bool

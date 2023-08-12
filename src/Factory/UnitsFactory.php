@@ -62,7 +62,7 @@ final class UnitsFactory
         return match ($unitClass) {
             UnitClass::Fighter => $this->createFighter($unitData['unitId'], $unitData),
             UnitClass::Mercenary => new Mercenary(),
-            UnitClass::Creature => new Creature(),
+            UnitClass::Creature => $this->createCreature($unitData['unitId'], $unitData),
         };
     }
 
@@ -74,7 +74,6 @@ final class UnitsFactory
             empty($unitData['attackType']) ||
             empty($unitData['armorType']) ||
             empty($unitData['categoryClass']) ||
-            empty($unitData['legionId']) ||
             !isset($unitData['goldCost']) ||
             !isset($unitData['upgradesFrom'])
         ) {
@@ -90,7 +89,7 @@ final class UnitsFactory
         }
 
         return new Fighter(
-            $unitData['unitId'],
+            $unitId,
             $unitData['name'],
             $unitData['description'],
             $unitData['iconPath'],
@@ -99,6 +98,32 @@ final class UnitsFactory
             $unitData['legionId'],
             (int) $unitData['goldCost'],
             $unitData['upgradesFrom']
+        );
+    }
+
+    private function createCreature(string $unitId, array $unitData): ?Creature
+    {
+        if (empty($unitData['name']) ||
+            empty($unitData['description']) ||
+            empty($unitData['iconPath']) ||
+            empty($unitData['attackType']) ||
+            empty($unitData['armorType']) ||
+            empty($unitData['categoryClass'])
+        ) {
+            throw new Exception(sprintf('Missing unit data for "%s"', $unitId));
+        }
+
+        if ($unitData['categoryClass'] === 'Special') {
+            return null;
+        }
+
+        return new Creature(
+            $unitId,
+            $unitData['name'],
+            $unitData['description'],
+            $unitData['iconPath'],
+            AttackType::fromValue($unitData['attackType']),
+            ArmorType::fromValue($unitData['armorType'])
         );
     }
 }

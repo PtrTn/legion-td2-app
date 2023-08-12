@@ -26,10 +26,11 @@ final class UnitsRepository
     public function getCreatureById(string $unitId): Creature
     {
         $units = $this->unitsFactory->create();
+        $creatures = $units->getCreatures();
 
-        foreach ($units as $unit) {
-            if ($unit->unitId === $unitId) {
-                return $unit;
+        foreach ($creatures as $creature) {
+            if ($creature->unitId === $unitId) {
+                return $creature;
             }
         }
 

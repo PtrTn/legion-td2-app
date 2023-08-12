@@ -41,4 +41,18 @@ final class Units
 
         return $fighters;
     }
+
+    /** @return Creature[] */
+    public function getCreatures(): array
+    {
+        $creatures = [];
+        foreach ($this->units as $unit) {
+            if (!$unit instanceof Creature) {
+                continue;
+            }
+            $creatures[] = $unit;
+        }
+
+        return $creatures;
+    }
 }
