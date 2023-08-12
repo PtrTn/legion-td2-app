@@ -19,17 +19,6 @@ return [
         'preload' => true,
     ],
     'bootstrap' => [
-        'downloaded_to' => 'vendor/bootstrap.js',
         'url' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/+esm',
-    ],
-    '@popperjs/core' => [
-        'downloaded_to' => 'vendor/@popperjs/core.js',
-        'url' => 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/+esm',
-    ],
-    'jquery' => [
-        'url' => 'https://cdn.jsdelivr.net/npm/jquery@3.7.0/+esm',
-    ],
-    'popper' => [
-        'url' => 'https://cdn.jsdelivr.net/npm/popper@1.0.1/+esm',
     ],
 ];
