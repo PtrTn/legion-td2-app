@@ -61,8 +61,8 @@ final class UnitsFactory
 
         return match ($unitClass) {
             UnitClass::Fighter => $this->createFighter($unitData['unitId'], $unitData),
-            UnitClass::Mercenary => new Mercenary(),
             UnitClass::Creature => $this->createCreature($unitData['unitId'], $unitData),
+            UnitClass::Mercenary => $this->createMercenary($unitData['unitId'], $unitData),
         };
     }
 
@@ -122,6 +122,38 @@ final class UnitsFactory
             $unitData['name'],
             $unitData['description'],
             $unitData['iconPath'],
+            AttackType::fromValue($unitData['attackType']),
+            ArmorType::fromValue($unitData['armorType'])
+        );
+    }
+
+    private function createMercenary(string $unitId, array $unitData): ?Mercenary
+    {
+        if (empty($unitData['name']) ||
+            empty($unitData['description']) ||
+            empty($unitData['iconPath']) ||
+            empty($unitData['attackType']) ||
+            empty($unitData['armorType']) ||
+            empty($unitData['categoryClass'] ||
+            !isset($unitData['mythiumCost']))
+        ) {
+            throw new Exception(sprintf('Missing unit data for "%s"', $unitId));
+        }
+
+        if ($unitData['categoryClass'] === 'Special') {
+            return null;
+        }
+
+        if ($unitId === 'giant_snail_unit_id') {
+            return null;
+        }
+
+        return new Mercenary(
+            $unitId,
+            $unitData['name'],
+            $unitData['description'],
+            $unitData['iconPath'],
+            (int) $unitData['mythiumCost'],
             AttackType::fromValue($unitData['attackType']),
             ArmorType::fromValue($unitData['armorType'])
         );

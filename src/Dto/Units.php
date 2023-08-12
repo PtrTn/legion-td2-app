@@ -6,6 +6,7 @@ namespace App\Dto;
 
 final class Units
 {
+    /** @var array<Fighter|Creature|Mercenary> */
     private array $units = [];
 
     private function __construct()
@@ -25,28 +26,18 @@ final class Units
     /** @return Fighter[] */
     public function getFighters(): array
     {
-        $fighters = [];
-        foreach ($this->units as $unit) {
-            if (!$unit instanceof Fighter) {
-                continue;
-            }
-            $fighters[] = $unit;
-        }
-
-        return $fighters;
+        return array_filter($this->units, fn(Fighter|Creature|Mercenary $unit) => $unit instanceof Fighter);
     }
 
     /** @return Creature[] */
     public function getCreatures(): array
     {
-        $creatures = [];
-        foreach ($this->units as $unit) {
-            if (!$unit instanceof Creature) {
-                continue;
-            }
-            $creatures[] = $unit;
-        }
+        return array_filter($this->units, fn(Fighter|Creature|Mercenary $unit) => $unit instanceof Creature);
+    }
 
-        return $creatures;
+    /** @return Mercenary[] */
+    public function getMercenaries(): array
+    {
+        return array_filter($this->units, fn(Fighter|Creature|Mercenary $unit) => $unit instanceof Mercenary);
     }
 }

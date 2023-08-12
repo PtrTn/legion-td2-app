@@ -9,6 +9,7 @@ use App\Dto\Fighter;
 use App\Dto\WaveCounters;
 use App\Form\UnitFormType;
 use App\Repository\EffectivenessRepository;
+use App\Repository\UnitsRepository;
 use App\Repository\WavesRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,7 @@ final class SubmitFormController extends AbstractController
     public function __construct(
         private readonly WavesRepository $wavesRepository,
         private readonly EffectivenessRepository $effectivenessRepository,
+        private readonly UnitsRepository $unitsRepository
     )
     {
 
@@ -77,7 +79,10 @@ final class SubmitFormController extends AbstractController
     /** @param Fighter[] $selectedUnits */
     private function showMercenaryAdvice(array $selectedUnits): Response
     {
+        $mercenaries = $this->unitsRepository->getMercenariesSortedByMythiumCost();
+        foreach ($selectedUnits as $selectedUnit) {
 
+        }
 
         return $this->render('mercenary_advice.twig', []);
     }

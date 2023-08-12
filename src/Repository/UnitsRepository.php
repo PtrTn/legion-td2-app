@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Dto\Creature;
 use App\Dto\Fighter;
+use App\Dto\Mercenary;
 use App\Factory\UnitsFactory;
 use Exception;
 
@@ -39,5 +40,15 @@ final class UnitsRepository
         }
 
         throw new Exception(sprintf('Unable to find unit by id "%s"', $unitId));
+    }
+
+    /** @return Mercenary[] */
+    public function getMercenariesSortedByMythiumCost(): array
+    {
+        $units = $this->unitsFactory->create();
+        $mercenaries = $units->getMercenaries();
+        usort($mercenaries, fn(Mercenary $mercenaryA, Mercenary $mercenaryB) => $mercenaryA->mythiumCost <=> $mercenaryB->mythiumCost);
+
+        return $mercenaries;
     }
 }
