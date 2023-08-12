@@ -16,11 +16,15 @@ final class UnitsRepository
     }
 
     /** @return Fighter[] */
-    public function getFighters(): array
+    public function getFightersBaseUnitsSortedByGoldCost(): array
     {
         $units = $this->unitsFactory->create();
+        $fighters = $units->getFighters();
 
-        return $units->getFighters();
+        $baseUnitFighters = array_filter($fighters, fn (Fighter $fighter) => $fighter->isBaseUnit());
+        usort($baseUnitFighters, fn(Fighter $fighterA, Fighter $fighterB) => $fighterA->goldCost <=> $fighterB->goldCost);
+
+        return $baseUnitFighters;
     }
 
     public function getCreatureById(string $unitId): Creature

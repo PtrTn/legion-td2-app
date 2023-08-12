@@ -10,7 +10,6 @@ final class Units
 
     private function __construct()
     {
-
     }
 
     public static function Create(): self
@@ -31,13 +30,8 @@ final class Units
             if (!$unit instanceof Fighter) {
                 continue;
             }
-            if (!$unit->isBaseUnit()) {
-                continue;
-            }
             $fighters[] = $unit;
         }
-
-        usort($fighters, fn(Fighter $fighterA, Fighter $fighterB) => $fighterA->goldCost <=> $fighterB->goldCost);
 
         return $fighters;
     }

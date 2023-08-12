@@ -20,7 +20,7 @@ final class UnitFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $units = $this->unitRepository->getFighters();
+        $units = $this->unitRepository->getFightersBaseUnitsSortedByGoldCost();
 
         $builder->add('units', ChoiceType::class, [
             'label' => 'Select what units you can build',
