@@ -26,6 +26,6 @@ task('deploy:import_data', function () {
 });
 
 // Hooks
-before('deploy:unlock', 'deploy:build_assets');
+after('deploy:symlink', 'deploy:build_assets');
 before('deploy:success', 'deploy:import_data');
 after('deploy:failed', 'deploy:unlock');
