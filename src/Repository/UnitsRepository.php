@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Dto\Unit;
-use App\Enum\UnitType;
+use App\Dto\Creature;
+use App\Dto\Fighter;
 use App\Factory\UnitsFactory;
 use Exception;
 
@@ -15,28 +15,15 @@ final class UnitsRepository
     {
     }
 
-    /** @return Unit[] */
+    /** @return Fighter[] */
     public function getFighters(): array
     {
         $units = $this->unitsFactory->create();
 
-        $units = array_filter($units, function (Unit $unit) {
-            if($unit->unitType !== UnitType::Fighter) {
-                return false;
-            }
-            if ($unit->goldCost === null) {
-                return false;
-            }
-
-            return $unit->isBaseUnit();
-        });
-
-        usort($units, fn(Unit $unitA, Unit $unitB) => $unitA->goldCost <=> $unitB->goldCost);
-
-        return $units;
+        return $units->getFighters();
     }
 
-    public function getById(string $unitId): Unit
+    public function getCreatureById(string $unitId): Creature
     {
         $units = $this->unitsFactory->create();
 

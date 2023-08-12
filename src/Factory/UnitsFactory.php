@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Factory;
 
-use App\Dto\Unit;
+use App\Dto\Creature;
+use App\Dto\Fighter;
+use App\Dto\Mercenary;
+use App\Dto\Units;
 use App\Enum\ArmorType;
 use App\Enum\AttackType;
-use App\Enum\UnitType;
+use App\Enum\UnitClass;
 use Exception;
+use ValueError;
 
 final class UnitsFactory
 {
@@ -16,20 +20,22 @@ final class UnitsFactory
     {
     }
 
-    /** @return Unit[] */
-    public function create(): array
+    public function create(): Units
     {
         $unitsJson = file_get_contents($this->projectRoot . DIRECTORY_SEPARATOR . 'data/units.json');
         $unitsData = json_decode($unitsJson, true);
-        $units = [];
+        $units = Units::Create();
         foreach ($unitsData as $unitData) {
-            $units[] = $this->createUnit($unitData);
+            $unit = $this->createUnit($unitData);
+            if ($unit !== null) {
+                $units->add($unit);
+            }
         }
 
-        return array_filter($units);
+        return $units;
     }
 
-    private function createUnit(array $unitData): ?Unit
+    private function createUnit(array $unitData): Fighter|Creature|Mercenary|null
     {
         if (empty($unitData['unitId'])) {
             throw new Exception('Missing data for unknown unit');
@@ -39,6 +45,29 @@ final class UnitsFactory
             return null;
         }
 
+        if (isset($unitData['flags']) && str_contains($unitData['flags'], 'flags_summoned')) {
+            return null;
+        }
+
+        if (empty($unitData['unitClass'])) {
+            throw new Exception(sprintf('Unknown unit class for unit %s', $unitData['unitId']));
+        }
+
+        try {
+            $unitClass = UnitClass::fromValue($unitData['unitClass']);
+        } catch (ValueError) {
+            return null;
+        }
+
+        return match ($unitClass) {
+            UnitClass::Fighter => $this->createFighter($unitData['unitId'], $unitData),
+            UnitClass::Mercenary => new Mercenary(),
+            UnitClass::Creature => new Creature(),
+        };
+    }
+
+    private function createFighter(string $unitId, array $unitData): ?Fighter
+    {
         if (empty($unitData['name']) ||
             empty($unitData['description']) ||
             empty($unitData['iconPath']) ||
@@ -49,29 +78,26 @@ final class UnitsFactory
             !isset($unitData['goldCost']) ||
             !isset($unitData['upgradesFrom'])
         ) {
-            throw new Exception(sprintf('Missing unit data for "%s"', $unitData['unitId']));
+            throw new Exception(sprintf('Missing unit data for "%s"', $unitId));
+        }
+
+        if ($unitData['goldCost'] === "") {
+            return null;
         }
 
         if ($unitData['categoryClass'] === 'Special') {
             return null;
         }
 
-        $unitType = match ($unitData['legionId']) {
-            'creature_legion_id' => UnitType::Wave,
-            'nether_legion_id' => UnitType::Mercenary,
-            default => UnitType::Fighter,
-        };
-
-        return new Unit(
+        return new Fighter(
             $unitData['unitId'],
             $unitData['name'],
             $unitData['description'],
             $unitData['iconPath'],
             AttackType::fromValue($unitData['attackType']),
             ArmorType::fromValue($unitData['armorType']),
-            $unitType,
             $unitData['legionId'],
-            $unitData['goldCost'] ? (int) $unitData['goldCost'] : null,
+            (int) $unitData['goldCost'],
             $unitData['upgradesFrom']
         );
     }

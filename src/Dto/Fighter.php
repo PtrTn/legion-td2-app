@@ -6,9 +6,8 @@ namespace App\Dto;
 
 use App\Enum\ArmorType;
 use App\Enum\AttackType;
-use App\Enum\UnitType;
 
-final class Unit
+final class Fighter
 {
     public function __construct(
         public string $unitId,
@@ -17,7 +16,6 @@ final class Unit
         public string $iconPath,
         public readonly AttackType $attackType,
         public readonly ArmorType $armorType,
-        public readonly UnitType $unitType,
         public string $legionId,
         public ?int $goldCost,
         public array $upgradesFrom,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Dto\Unit;
+use App\Dto\Fighter;
 use App\Repository\UnitsRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -26,8 +26,8 @@ final class UnitFormType extends AbstractType
             'label' => 'Select what units you can build',
             'choices' => $units,
             'choice_value' => 'unitId',
-            'choice_label' => fn(?Unit $unit): string => $unit ? $unit->name : 'Unknown',
-            'choice_attr' => fn(?Unit $unit): array => $unit ? ['imagePath' => $unit->iconPath] : [],
+            'choice_label' => fn(?Fighter $unit): string => $unit ? $unit->name : 'Unknown',
+            'choice_attr' => fn(?Fighter $unit): array => $unit ? ['imagePath' => $unit->iconPath] : [],
             'multiple' => true,
         ]);
 

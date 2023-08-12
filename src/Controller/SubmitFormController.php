@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Dto\Counter;
-use App\Dto\Unit;
+use App\Dto\Fighter;
 use App\Dto\WaveCounters;
 use App\Form\UnitFormType;
 use App\Repository\EffectivenessRepository;
@@ -52,7 +52,7 @@ final class SubmitFormController extends AbstractController
         throw new Exception('Unable to handle request');
     }
 
-    /** @param Unit[] $selectedUnits */
+    /** @param Fighter[] $selectedUnits */
     private function showFighterAdvice(array $selectedUnits): Response
     {
         $waves = $this->wavesRepository->getAll();
@@ -74,7 +74,7 @@ final class SubmitFormController extends AbstractController
         return $this->render('fighter_advice.twig', ['waveCounters' => $waveCounters]); // todo, show per fighter instead.
     }
 
-    /** @param Unit[] $selectedUnits */
+    /** @param Fighter[] $selectedUnits */
     private function showMercenaryAdvice(array $selectedUnits): Response
     {
 

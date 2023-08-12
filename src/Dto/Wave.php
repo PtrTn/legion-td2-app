@@ -9,7 +9,7 @@ final class Wave
     public function __construct(
         public readonly string $id,
         public readonly int $waveNumber,
-        public readonly Unit $unit
+        public readonly Fighter $unit
     )
     {
     }

@@ -35,7 +35,7 @@ final class WavesFactory
             throw new Exception(sprintf('Missing unit data for "%s"', $waveData['unitId'] ?? 'Unknown'));
         }
 
-        $unit = $this->unitsRepository->getById($waveData['waveUnitId']);
+        $unit = $this->unitsRepository->getCreatureById($waveData['waveUnitId']);
 
         return new Wave(
             $waveData['_id'],
