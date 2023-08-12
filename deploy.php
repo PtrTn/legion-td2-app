@@ -24,8 +24,16 @@ task('deploy:import_data', function () {
     cd('{{release_path}}');
     run('bin/console app:download');
 });
+task('deploy:remove_files', function () {
+    cd('{{release_path}}');
+    run('rm -rf .github');
+    run('rm .gitignore');
+    run('rm importmap.php');
+    run('rm symfony.lock');
+});
 
 // Hooks
 after('deploy:symlink', 'deploy:build_assets');
 before('deploy:success', 'deploy:import_data');
+before('deploy:success', 'deploy:remove_files');
 after('deploy:failed', 'deploy:unlock');
