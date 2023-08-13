@@ -46,8 +46,6 @@ label::before {
 }
 
 label img {
-    height: 100px;
-    width: 100px;
     transition-duration: 0.2s;
     transform-origin: 50% 50%;
 }

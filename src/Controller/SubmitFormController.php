@@ -74,7 +74,7 @@ final class SubmitFormController extends AbstractController
             $waveCounters[] = new WaveCounters($wave, $counters);
         }
 
-        return $this->render('fighter_advice.twig', ['waveCounters' => $waveCounters]); // todo, show per fighter instead.
+        return $this->render('fighter_advice.twig', ['waveCounters' => $waveCounters]);
     }
 
     /** @param Fighter[] $selectedFighters */
@@ -92,6 +92,7 @@ final class SubmitFormController extends AbstractController
                 }
             }
 
+            usort($counters, fn(Counter $counterA, Counter $counterB) => $counterB->getTotalModifier() <=> $counterA->getTotalModifier());
             $fighterCounters[] = new FighterCounters($selectedFighter, $counters);
         }
 
