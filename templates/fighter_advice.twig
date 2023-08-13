@@ -7,35 +7,34 @@
         </div>
         <div class="row gy-3 justify-content-around">
             {% for waveCounter in waveCounters %}
-                <div class="col-5 px-3">
-                        <div class="row pb-4">
-                            <div class="row align-items-center pb-2">
-                                <div class="col-auto">
-                                    <h2 class="mb-0">Wave {{ waveCounter.wave.waveNumber }}: {{ waveCounter.wave.unit.name }}</h2>
-                                </div>
-                                <div class="col">
-                                    <div>
-                                        <img width="30px" height="30px" alt="{{ waveCounter.wave.unit.description }}" src="https://cdn.legiontd2.com/{{ waveCounter.wave.unit.iconPath }}" />
-                                    </div>
+                <div class="col-6 px-3">
+                    <div class="row align-items-center pb-2">
+                        <div class="col-auto">
+                            <h2 class="mb-0">Wave {{ waveCounter.wave.waveNumber }}: {{ waveCounter.wave.unit.name }}</h2>
+                        </div>
+                        <div class="col-auto">
+                            <div>
+                                <img width="30px" height="30px" alt="{{ waveCounter.wave.unit.description }}" src="https://cdn.legiontd2.com/{{ waveCounter.wave.unit.iconPath }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% for counter in waveCounter.counters %}
+                            <div class="col-2 pb-2">
+                                <div class="d-flex flex-column align-items-center">
+                                    <img class="img-thumbnail" alt="{{ counter.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ counter.attackingUnit.iconPath }}" />
+                                    <span class="text-center mt-1">{{ counter.attackingUnit.name }}</span>
+                                    <span class="badge badge-pill bg-success" data-toggle="tooltip" title="Attack {{ counter.formattedAttackModifier }} Defense {{ counter.formattedDefenseModifier }}">
+                                        {{ counter.formattedTotalModifier }}
+                                    </span>
                                 </div>
                             </div>
-                            {% for counter in waveCounter.counters %}
-                                <div class="col-3">
-                                    <div class="d-flex flex-column align-items-center">
-                                        <img class="img-thumbnail" alt="{{ counter.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ counter.attackingUnit.iconPath }}" />
-                                        <span class="text-center mt-1">{{ counter.attackingUnit.name }}</span>
-                                        <span>
-                                            <img width="12px" height="12px" src="https://static.wikia.nocookie.net/legion-td-2/images/e/e8/Role_dps.png"/>
-                                            <span class="text-{% if counter.attackModifier >= 0 %}success{% else %}danger{% endif %}">{{ counter.formattedAttackModifier }}</span>
-                                            <img width="12px" height="12px" src="https://static.wikia.nocookie.net/legion-td-2/images/4/43/Role_tank.png"/>
-                                            <span class="text-{% if counter.defenseModifier >= 0 %}success{% else %}danger{% endif %}">{{ counter.formattedDefenseModifier }}</span>
-                                        </span>
-                                    </div>
-                                </div>
-                            {% else %}
+                        {% else %}
+                            <div class="col-3">
                                 <span>No counters</span>
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
         </div>
