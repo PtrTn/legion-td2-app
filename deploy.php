@@ -34,6 +34,8 @@ task('deploy:remove_files', function () {
     run('rm .gitignore');
     run('rm importmap.php');
     run('rm symfony.lock');
+    run('rm composer.lock');
+    run('rm composer.json');
 });
 
 // Hooks
