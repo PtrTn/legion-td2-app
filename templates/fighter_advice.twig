@@ -6,7 +6,7 @@
             <h1 class="text-center">You can build the following counters</h1>
             <p class="text-center">The following fighters certain waves based on their attack and armor types</p>
         </div>
-        <div class="row gy-3 justify-content-around">
+        <div class="row gy-2 justify-content-around">
             {% for waveCounter in waveCounters %}
                 <div class="col-6 px-3">
                     <div class="row align-items-center pb-2">
@@ -21,7 +21,7 @@
                     </div>
                     <div class="row">
                         {% for counter in waveCounter.counters %}
-                            <div class="col-2 pb-2">
+                            <div class="col-auto pb-2">
                                 <div class="d-flex flex-column align-items-center">
                                     <img class="border border-primary rounded" alt="{{ counter.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ counter.attackingUnit.iconPath }}" />
                                     <span class="text-center mt-1">{{ counter.attackingUnit.name }}</span>
