@@ -3,8 +3,10 @@
 {% block body %}
     <div class="container">
         <div class="row pt-4">
-            <h1 class="text-center">You can build the following counters</h1>
-            <p class="text-center">The following mercenaries are strong against your opponents fighters. This is calculated based on attack and armor types</p>
+            <div class="col">
+                <h1 class="text-center">You can build the following counters</h1>
+                <p class="text-center">The following mercenaries are strong against your opponents fighters. This is calculated based on attack and armor types</p>
+            </div>
         </div>
         <div class="row gy-2 justify-content-around">
             {% for fighterCounter in fighterCounters %}

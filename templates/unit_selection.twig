@@ -3,43 +3,52 @@
 {% block body %}
     <div class="container">
         {{ form_start(form) }}
-        <div>
-            {{ form_errors(form) }}
+
+        <div class="row pt-4">
+            <div class="col">
+                <h1 class="text-center">Select what fighters are available</h1>
+                <p class="text-center">
+                    Select the fighters you can build and find out what waves they counter.<br>
+                    Alternatively select the fighters your opponent can build to see what mercenaries you should buy.
+                </p>
+            </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <h1 class="text-center">{{ form_label(form.units) }}</h1>
-                <fieldset id="{{ form.units.vars.id }}">
-                    <div class="row">
-                        {% for choice in form.units.vars.choices %}
-                            <div class="col-1">
-                                <input type="checkbox" id="{{ choice.value }}" name="{{ field_name(form.units) }}" value="{{ choice.value }}"/>
-                                <label for="{{ choice.value }}" class="d-flex flex-column justify-content-center align-items-center">
-                                    <img width="75px" height="75px" class="border border-primary rounded" alt="{{ choice.data.name }}" src="https://cdn.legiontd2.com/{{ choice.data.iconPath }}" />
-                                    <span class="text-center">{{ choice.data.name }}</span>
-                                </label>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </fieldset>
-
-                <div class="row justify-content-center mt-4">
-                    <div class="col-3">
-                        {{ form_widget(form.fighterAdvice) }}
-                    </div>
-                    <div class="col-3">
-                        {{ form_widget(form.mercenaryAdvice) }}
-                    </div>
-                </div>
-
-                <small>{{ form_help(form.units) }}</small>
-
-                <div class="form-error">
-                    {{ form_errors(form.units) }}
-                </div>
+                {{ form_errors(form) }}
             </div>
         </div>
+
+        <fieldset id="{{ form.units.vars.id }}">
+            <div class="row">
+                {% for choice in form.units.vars.choices %}
+                    <div class="col-1">
+                        <input type="checkbox" id="{{ choice.value }}" name="{{ field_name(form.units) }}" value="{{ choice.value }}"/>
+                        <label for="{{ choice.value }}" class="d-flex flex-column justify-content-center align-items-center">
+                            <img width="75px" height="75px" class="border border-primary rounded" alt="{{ choice.data.name }}" src="https://cdn.legiontd2.com/{{ choice.data.iconPath }}" />
+                            <span class="text-center">{{ choice.data.name }}</span>
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        </fieldset>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-3">
+                {{ form_widget(form.fighterAdvice) }}
+            </div>
+            <div class="col-3">
+                {{ form_widget(form.mercenaryAdvice) }}
+            </div>
+        </div>
+
+        <small>{{ form_help(form.units) }}</small>
+
+        <div class="form-error">
+            {{ form_errors(form.units) }}
+        </div>
+
         {{ form_end(form) }}
     </div>
 {% endblock %}

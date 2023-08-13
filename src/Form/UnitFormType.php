@@ -23,7 +23,6 @@ final class UnitFormType extends AbstractType
         $units = $this->unitRepository->getFightersBaseUnitsSortedByGoldCost();
 
         $builder->add('units', ChoiceType::class, [
-            'label' => 'Select what units you can build',
             'choices' => $units,
             'choice_value' => 'unitId',
             'choice_label' => fn(?Fighter $unit): string => $unit ? $unit->name : 'Unknown',
