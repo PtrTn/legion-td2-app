@@ -5,24 +5,24 @@
         <div class="row">
             <h1 class="text-center">You can build the following counters</h1>
         </div>
-        <div class="row gy-3 justify-content-around">
+        <div class="row gy-2 justify-content-around">
             {% for fighterCounter in fighterCounters %}
                 <div class="col-12 px-3">
-                    <div class="row pb-4">
-                        <div class="row align-items-center pb-2">
-                            <div class="col-auto">
-                                <h2 class="mb-0">{{ fighterCounter.fighter.name }}</h2>
-                            </div>
-                            <div class="col">
-                                <div>
-                                    <img width="30px" height="30px" alt="{{ fighterCounter.fighter.description }}" src="https://cdn.legiontd2.com/{{ fighterCounter.fighter.iconPath }}" />
-                                </div>
+                    <div class="row align-items-center pb-2">
+                        <div class="col-auto">
+                            <h2 class="mb-0">{{ fighterCounter.fighter.name }}</h2>
+                        </div>
+                        <div class="col">
+                            <div>
+                                <img width="30px" height="30px" alt="{{ fighterCounter.fighter.description }}" src="https://cdn.legiontd2.com/{{ fighterCounter.fighter.iconPath }}" />
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         {% for counter in fighterCounter.counters %}
-                            <div class="col-1">
+                            <div class="col-1 px-1">
                                 <div class="d-flex flex-column align-items-center">
-                                    <img class="img-thumbnail" alt="{{ counter.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ counter.attackingUnit.iconPath }}" />
+                                    <img width="60px" height="60px" alt="{{ counter.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ counter.attackingUnit.iconPath }}" />
                                     <span class="text-center mt-1">{{ counter.attackingUnit.name }}</span>
                                     <span>
                                         <span class="text-{% if counter.totalModifier >= 0 %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Attack {{ counter.formattedAttackModifier }} Defense {{ counter.formattedDefenseModifier }}">
