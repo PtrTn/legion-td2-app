@@ -9,26 +9,33 @@
             </div>
         </div>
         <div class="row gy-2 justify-content-around">
-            {% for fighterCounter in fighterCounters %}
+            {% for mercenaryMatchup in mercenaryMatchups %}
                 <div class="col-12 px-3 pb-2">
                     <div class="row align-items-center pb-2">
                         <div class="col-auto">
-                            <h2 class="mb-0">{{ fighterCounter.fighter.name }}</h2>
+                            <h2 class="mb-0">{{ mercenaryMatchup.mercenary.name }}
+                            </h2>
                         </div>
-                        <div class="col">
+                        <div class="col-auto">
                             <div>
-                                <img width="30px" height="30px" alt="{{ fighterCounter.fighter.description }}" src="https://cdn.legiontd2.com/{{ fighterCounter.fighter.iconPath }}" />
+                                <img width="30px" height="30px" alt="{{ mercenaryMatchup.mercenary.description }}" src="https://cdn.legiontd2.com/{{ mercenaryMatchup.mercenary.iconPath }}" />
                             </div>
                         </div>
+                        <div class="col-auto">
+                            <h4><span class="badge badge-pill bg-success">{{ mercenaryMatchup.formattedTotalModifier }}</span></h4>
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#collapse-{{ mercenaryMatchup.mercenary.shortIdentifier }}" aria-expanded="false" aria-controls="collapseExample">Why?</button>
+                        </div>
                     </div>
-                    <div class="row gy-3">
-                        {% for counter in fighterCounter.counters %}
+                    <div class="row gy-3 collapse" id="collapse-{{ mercenaryMatchup.mercenary.shortIdentifier }}">
+                        {% for matchup in mercenaryMatchup.matchups %}
                             <div class="col-auto px-3">
                                 <div class="d-flex flex-column align-items-center">
-                                    <img width="60px" height="60px" class="border border-primary rounded" alt="{{ counter.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ counter.attackingUnit.iconPath }}" />
-                                    <span class="text-center mt-1">{{ counter.attackingUnit.name }}</span>
-                                    <span class="badge badge-pill bg-success" data-toggle="tooltip" title="Attack {{ counter.formattedAttackModifier }} Defense {{ counter.formattedDefenseModifier }}">
-                                        {{ counter.formattedTotalModifier }}
+                                    <img width="60px" height="60px" class="border border-primary rounded" alt="{{ matchup.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ matchup.attackingUnit.iconPath }}" />
+                                    <span class="text-center mt-1">{{ matchup.attackingUnit.name }}</span>
+                                    <span class="badge badge-pill bg-{% if matchup.totalModifier >= 0 %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Attack {{ matchup.formattedAttackModifier }} Defense {{ matchup.formattedDefenseModifier }}">
+                                        {{ matchup.formattedTotalModifier }}
                                     </span>
                                 </div>
                             </div>

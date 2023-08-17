@@ -6,7 +6,7 @@ namespace App\Dto;
 
 final class WaveCounters
 {
-    /** @param Counter[] $counters */
+    /** @param Matchup[] $counters */
     public function __construct(public readonly Wave $wave, public readonly array $counters)
     {
 

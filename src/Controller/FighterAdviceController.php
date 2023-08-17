@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Dto\Counter;
+use App\Dto\Matchup;
 use App\Dto\Fighter;
 use App\Dto\WaveCounters;
 use App\Repository\EffectivenessRepository;
@@ -44,11 +44,11 @@ final class FighterAdviceController extends AbstractController
                 $attackModifier = $this->effectivenessRepository->getEffectiveness($selectedFighter->attackType, $wave->unit->armorType);
                 $defenseModifier = $this->effectivenessRepository->getEffectiveness($wave->unit->attackType, $selectedFighter->armorType);
                 if ($attackModifier + $defenseModifier > 0) {
-                    $counters[] = new Counter($selectedFighter, $wave->unit, $attackModifier, $defenseModifier);
+                    $counters[] = new Matchup($selectedFighter, $wave->unit, $attackModifier, $defenseModifier);
                 }
             }
 
-            usort($counters, fn(Counter $counterA, Counter $counterB) => $counterB->getTotalModifier() <=> $counterA->getTotalModifier());
+            usort($counters, fn(Matchup $counterA, Matchup $counterB) => $counterB->getTotalModifier() <=> $counterA->getTotalModifier());
             $waveCounters[] = new WaveCounters($wave, $counters);
         }
 

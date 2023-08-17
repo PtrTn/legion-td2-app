@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Dto\Counter;
+use App\Dto\Matchup;
 use App\Dto\Fighter;
-use App\Dto\FighterCounters;
+use App\Dto\MercenaryMatchups;
 use App\Repository\EffectivenessRepository;
 use App\Repository\UnitsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,21 +35,24 @@ final class MercenaryAdviceController extends AbstractController
     private function showMercenaryAdvice(array $selectedFighters): Response
     {
         $mercenaries = $this->unitsRepository->getMercenariesSortedByMythiumCost();
-        $fighterCounters = [];
-        foreach ($selectedFighters as $selectedFighter) {
-            $counters = [];
-            foreach ($mercenaries as $mercenary) {
-                $attackModifier = $this->effectivenessRepository->getEffectiveness($mercenary->attackType, $selectedFighter->armorType);
-                $defenseModifier = $this->effectivenessRepository->getEffectiveness($selectedFighter->attackType, $mercenary->armorType);
-                if ($attackModifier + $defenseModifier > 0) {
-                    $counters[] = new Counter($mercenary, $selectedFighter, $attackModifier, $defenseModifier);
-                }
+        $mercenaryMatchups = [];
+        foreach ($mercenaries as $mercenary) {
+            $matchups = [];
+            foreach ($selectedFighters as $selectedFighter) {
+                $attackModifier = $this->effectivenessRepository->getEffectiveness($selectedFighter->attackType, $mercenary->armorType);
+                $defenseModifier = $this->effectivenessRepository->getEffectiveness($mercenary->attackType, $selectedFighter->armorType);
+                $matchups[] = new Matchup($selectedFighter, $mercenary, $attackModifier, $defenseModifier);
             }
 
-            usort($counters, fn(Counter $counterA, Counter $counterB) => $counterB->getTotalModifier() <=> $counterA->getTotalModifier());
-            $fighterCounters[] = new FighterCounters($selectedFighter, $counters);
+            usort($matchups, fn(Matchup $matchupA, Matchup $matchupB) => $matchupB->getTotalModifier() <=> $matchupA->getTotalModifier());
+            $mercenaryMatchups[] = new MercenaryMatchups($mercenary, $matchups);
         }
 
-        return $this->render('mercenary_advice.twig', ['fighterCounters' => $fighterCounters]);
+        $mercenaryMatchups = array_filter($mercenaryMatchups, fn(MercenaryMatchups $matchup) => $matchup->getTotalModifier() > 0);
+        usort($mercenaryMatchups, function (MercenaryMatchups $matchupA, MercenaryMatchups $matchupB) {
+            return $matchupB->getTotalModifier() <=> $matchupA->getTotalModifier();
+        });
+
+        return $this->render('mercenary_advice.twig', ['mercenaryMatchups' => $mercenaryMatchups]);
     }
 }
