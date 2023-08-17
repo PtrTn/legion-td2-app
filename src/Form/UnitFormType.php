@@ -18,7 +18,7 @@ final class UnitFormType extends AbstractType
     ) {
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $units = $this->unitRepository->getFightersBaseUnitsSortedByGoldCost();
 
