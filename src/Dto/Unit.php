@@ -20,4 +20,8 @@ class Unit
     {
     }
 
+    public function getShortIdentifier(): string
+    {
+        return str_replace('_unit_id', '', $this->unitId);
+    }
 }

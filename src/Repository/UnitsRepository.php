@@ -42,6 +42,25 @@ final class UnitsRepository
         throw new Exception(sprintf('Unable to find unit by id "%s"', $unitId));
     }
 
+    /**
+     * @param string[] $fighterShortUnitIds
+     * @return Fighter[]
+     */
+    public function getFightersById(array $fighterShortUnitIds): array
+    {
+        $units = $this->unitsFactory->create();
+        $fighters = $units->getFighters();
+
+        $matched = [];
+        foreach ($fighters as $fighter) {
+            if (in_array($fighter->getShortIdentifier(), $fighterShortUnitIds)) {
+                $matched[] = $fighter;
+            }
+        }
+
+        return $matched;
+    }
+
     /** @return Mercenary[] */
     public function getMercenariesSortedByMythiumCost(): array
     {
