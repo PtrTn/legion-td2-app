@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Dto\Matchup;
 use App\Dto\Fighter;
-use App\Dto\WaveCounters;
+use App\Dto\WaveMatchups;
 use App\Repository\EffectivenessRepository;
 use App\Repository\UnitsRepository;
 use App\Repository\WavesRepository;
@@ -37,7 +37,7 @@ final class FighterAdviceController extends AbstractController
     private function showFighterAdvice(array $selectedFighters): Response
     {
         $waves = $this->wavesRepository->getAll();
-        $waveCounters = [];
+        $waveMatchups = [];
         foreach ($waves as $wave) {
             $counters = [];
             foreach ($selectedFighters as $selectedFighter) {
@@ -49,9 +49,9 @@ final class FighterAdviceController extends AbstractController
             }
 
             usort($counters, fn(Matchup $counterA, Matchup $counterB) => $counterB->getTotalModifier() <=> $counterA->getTotalModifier());
-            $waveCounters[] = new WaveCounters($wave, $counters);
+            $waveMatchups[] = new WaveMatchups($wave, $counters);
         }
 
-        return $this->render('fighter_advice.twig', ['waveCounters' => $waveCounters]);
+        return $this->render('fighter_advice.twig', ['waveMatchups' => $waveMatchups]);
     }
 }
