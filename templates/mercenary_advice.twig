@@ -8,43 +8,99 @@
                 <p class="text-center">The following mercenaries are strong against your opponents fighters. This is calculated based on attack and armor types</p>
             </div>
         </div>
-        <div class="row gy-2 justify-content-around">
-            {% for mercenaryMatchup in mercenaryMatchups %}
-                <div class="col-12 px-3 pb-2">
-                    <div class="row align-items-center pb-2">
-                        <div class="col-auto">
-                            <h2 class="mb-0">{{ mercenaryMatchup.mercenary.name }}
-                            </h2>
-                        </div>
-                        <div class="col-auto">
-                            <div>
-                                <img width="30px" height="30px" alt="{{ mercenaryMatchup.mercenary.description }}" src="https://cdn.legiontd2.com/{{ mercenaryMatchup.mercenary.iconPath }}" />
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <h4><span class="badge badge-pill bg-success">{{ mercenaryMatchup.formattedTotalModifier }}</span></h4>
-                        </div>
-                        <div class="col-auto">
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#collapse-{{ mercenaryMatchup.mercenary.shortIdentifier }}" aria-expanded="false" aria-controls="collapseExample">Why?</button>
-                        </div>
-                    </div>
-                    <div class="row gy-3 collapse" id="collapse-{{ mercenaryMatchup.mercenary.shortIdentifier }}">
-                        {% for matchup in mercenaryMatchup.matchups %}
-                            <div class="col-auto px-3">
-                                <div class="d-flex flex-column align-items-center">
-                                    <img width="60px" height="60px" class="border border-primary rounded" alt="{{ matchup.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ matchup.attackingUnit.iconPath }}" />
-                                    <span class="text-center mt-1">{{ matchup.attackingUnit.name }}</span>
-                                    <span class="badge badge-pill bg-{% if matchup.totalModifier >= 0 %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Attack {{ matchup.formattedAttackModifier }} Defense {{ matchup.formattedDefenseModifier }}">
-                                        {{ matchup.formattedTotalModifier }}
-                                    </span>
-                                </div>
-                            </div>
-                        {% else %}
-                            <span>No counters</span>
-                        {% endfor %}
+        <div class="row">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-8">
+                        <h2>What to send</h2>
+                        <p>The higher the score, the more effective the mercenaries are against the enemy fighters</p>
                     </div>
                 </div>
-            {% endfor %}
+
+                <div class="row gy-2 justify-content-around">
+                    {% for mercenaryMatchup in mercenaryMatchups %}
+                        <div class="col-12">
+                            <div class="row align-items-center pb-2">
+                                <div class="col-auto">
+                                    <h3 class="mb-0">{{ mercenaryMatchup.mercenary.name }}</h3>
+                                </div>
+                                <div class="col-auto">
+                                    <div>
+                                        <img width="30px" height="30px" alt="{{ mercenaryMatchup.mercenary.description }}" src="https://cdn.legiontd2.com/{{ mercenaryMatchup.mercenary.iconPath }}" />
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <h4><span class="badge badge-pill bg-{% if mercenaryMatchup.totalModifier >= 0 %}success{% else %}danger{% endif %}">{{ mercenaryMatchup.formattedTotalModifier }}</span></h4>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#collapse-{{ mercenaryMatchup.mercenary.shortIdentifier }}" aria-expanded="false" aria-controls="collapseExample">Why?</button>
+                                </div>
+                            </div>
+                            <div class="row gy-3 collapse" id="collapse-{{ mercenaryMatchup.mercenary.shortIdentifier }}">
+                                {% for matchup in mercenaryMatchup.matchups %}
+                                    <div class="col-auto px-3">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <img width="60px" height="60px" class="border border-primary rounded" alt="{{ matchup.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ matchup.attackingUnit.iconPath }}" />
+                                            <span class="text-center mt-1">{{ matchup.attackingUnit.name }}</span>
+                                            <span class="badge badge-pill bg-{% if matchup.totalModifier >= 0 %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Attack {{ matchup.formattedAttackModifier }} Defense {{ matchup.formattedDefenseModifier }}">
+                                        {{ matchup.formattedTotalModifier }}
+                                    </span>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <span>No counters</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-8">
+                        <h2>When to send</h2>
+                        <p>The higher the score, the more effective the wave is against the enemy fighters</p>
+                    </div>
+                </div>
+
+                <div class="row gy-2 justify-content-around">
+                    {% for waveMatchup in waveMatchups %}
+                        <div class="col-12">
+                            <div class="row align-items-center pb-2">
+                                <div class="col-auto">
+                                    <h3 class="mb-0">Wave {{ waveMatchup.wave.waveNumber }}: {{ waveMatchup.wave.unit.name }}</h3>
+                                </div>
+                                <div class="col-auto">
+                                    <div>
+                                        <img width="30px" height="30px" alt="{{ waveMatchup.wave.unit.description }}" src="https://cdn.legiontd2.com/{{ waveMatchup.wave.unit.iconPath }}" />
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <h4><span class="badge badge-pill bg-{% if waveMatchup.totalModifier >= 0 %}success{% else %}danger{% endif %}">{{ waveMatchup.formattedTotalModifier }}</span></h4>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#collapse-{{ waveMatchup.wave.unit.shortIdentifier }}" aria-expanded="false" aria-controls="collapseExample">Why?</button>
+                                </div>
+                                <div class="row gy-3 collapse" id="collapse-{{ waveMatchup.wave.unit.shortIdentifier }}">
+                                    {% for matchup in waveMatchup.matchups %}
+                                        <div class="col-auto px-3">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <img width="60px" height="60px" class="border border-primary rounded" alt="{{ matchup.defendingUnit.description }}" src="https://cdn.legiontd2.com/{{ matchup.defendingUnit.iconPath }}" />
+                                                <span class="text-center mt-1">{{ matchup.defendingUnit.name }}</span>
+                                                <span class="badge badge-pill bg-{% if matchup.totalModifier >= 0 %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Attack {{ matchup.formattedAttackModifier }} Defense {{ matchup.formattedDefenseModifier }}">
+                                                    {{ matchup.formattedTotalModifier }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <span>No counters</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

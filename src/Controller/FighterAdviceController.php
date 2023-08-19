@@ -19,7 +19,7 @@ final class FighterAdviceController extends AbstractController
     public function __construct(
         private readonly UnitsRepository $unitsRepository,
         private readonly WavesRepository $wavesRepository,
-        private readonly EffectivenessRepository $effectivenessRepository
+        private readonly EffectivenessRepository $effectivenessRepository,
     )
     {
     }

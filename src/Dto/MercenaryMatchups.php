@@ -17,18 +17,6 @@ final class MercenaryMatchups
         return array_sum(array_map(fn(Matchup $matchup) => $matchup->getTotalModifier(), $this->matchups));
     }
 
-    /** @return Matchup[] */
-    public function getFavorableMatchups(): array
-    {
-        return array_filter($this->matchups, fn(Matchup $matchup) => $matchup->getTotalModifier() >= 0);
-    }
-
-    /** @return Matchup[] */
-    public function getUnfavorableMatchups(): array
-    {
-        return array_filter($this->matchups, fn(Matchup $matchup) => $matchup->getTotalModifier() < 0);
-    }
-
     public function formattedTotalModifier(): string
     {
         $modifier = $this->getTotalModifier();
