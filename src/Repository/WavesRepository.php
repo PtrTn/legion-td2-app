@@ -9,6 +9,8 @@ use App\Factory\WavesFactory;
 
 final class WavesRepository
 {
+    private ?array $waves = null;
+
     public function __construct(private readonly WavesFactory $wavesFactory)
     {
     }
@@ -16,6 +18,15 @@ final class WavesRepository
     /** @return Wave[] */
     public function getAll(): array
     {
-        return $this->wavesFactory->create();
+        return $this->getWaves();
+    }
+
+    private function getWaves(): array
+    {
+        if ($this->waves === null) {
+            $this->waves = $this->wavesFactory->create();
+        }
+
+        return $this->waves;
     }
 }
