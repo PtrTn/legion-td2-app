@@ -1,0 +1,14 @@
+{% if fighter.hasSameTypeUpgrades %}
+    <img width="50px" height="50px" class="border border-primary rounded" alt="{{ fighter.name }}" src="https://cdn.legiontd2.com/{{ fighter.iconPath }}" />
+    <div class="row justify-content-center g-0">
+        {% for upgrade in fighter.upgradesTo %}
+            <div class="col-auto">
+                <img width="25px" height="25px" class="border border-primary rounded" alt="{{ upgrade.name }}" src="https://cdn.legiontd2.com/{{ upgrade.iconPath }}" />
+            </div>
+        {% endfor %}
+    </div>
+    <span class="text-center">{{ fighter.name }}</span>
+{% else %}
+    <img width="75px" height="75px" class="border border-primary rounded" alt="{{ fighter.name }}" src="https://cdn.legiontd2.com/{{ fighter.iconPath }}" />
+    <span class="text-center">{{ fighter.name }}</span>
+{% endif %}

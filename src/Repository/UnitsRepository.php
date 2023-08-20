@@ -24,24 +24,9 @@ final class UnitsRepository
     {
         $fighters = $this->getUnits()->getFighters();
 
-        $baseUnits = array_filter($fighters, fn (Fighter $fighter) => $fighter->isBaseUnit());
-        $upgrades = array_filter($fighters, fn (Fighter $fighter) => !$fighter->isBaseUnit());
-        $uniqueUnits = $baseUnits;
-        foreach ($baseUnits as $baseUnit) {
-            foreach ($upgrades as $upgrade) {
-                if (!in_array('units ' . $baseUnit->unitId, $upgrade->upgradesFrom)) {
-                    continue;
-                }
-                if ($baseUnit->armorType === $upgrade->armorType && $baseUnit->attackType === $upgrade->attackType) {
-                    $baseUnit->addSameTypeUpgrade($upgrade);
-                }
-                $uniqueUnits[] = $upgrade;
-            }
-        }
+        usort($fighters, fn(Fighter $fighterA, Fighter $fighterB) => $fighterA->goldCost <=> $fighterB->goldCost);
 
-        usort($uniqueUnits, fn(Fighter $fighterA, Fighter $fighterB) => $fighterA->goldCost <=> $fighterB->goldCost);
-
-        return $uniqueUnits;
+        return $fighters;
     }
 
     public function getCreatureById(string $unitId): Creature

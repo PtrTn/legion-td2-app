@@ -25,8 +25,7 @@
                         {% for matchup in waveMatchup.matchups %}
                             <div class="col-auto pb-2">
                                 <div class="d-flex flex-column align-items-center">
-                                    <img class="border border-primary rounded" alt="{{ matchup.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ matchup.attackingUnit.iconPath }}" />
-                                    <span class="text-center mt-1">{{ matchup.attackingUnit.name }}</span>
+                                    {% include 'components/fightercard.html.twig' with {'fighter': matchup.attackingUnit } %}
                                     <span class="badge badge-pill bg-success" data-toggle="tooltip" title="Attack {{ matchup.formattedAttackModifier }} Defense {{ matchup.formattedDefenseModifier }}">
                                         {{ matchup.formattedTotalModifier }}
                                     </span>

@@ -26,10 +26,32 @@ final class UnitsFactory
         $unitsJson = file_get_contents($this->projectRoot . DIRECTORY_SEPARATOR . 'data/units.json');
         $unitsData = json_decode($unitsJson, true);
         $units = Units::Create();
+        $fighters = [];
         foreach ($unitsData as $unitData) {
             $unit = $this->createTypedUnit($unitData);
-            if ($unit !== null) {
-                $units->add($unit);
+            if ($unit === null) {
+                continue;
+            }
+            if ($unit instanceof Fighter) {
+                $fighters[] = $unit;
+                continue;
+            }
+
+            $units->add($unit);
+        }
+
+        $baseFighters = array_filter($fighters, fn (Fighter $fighter) => $fighter->isBaseUnit());
+        $upgradeFighters = array_filter($fighters, fn (Fighter $fighter) => !$fighter->isBaseUnit());
+        foreach ($baseFighters as $baseUnit) {
+            $units->add($baseUnit);
+            foreach ($upgradeFighters as $upgrade) {
+                if (!in_array('units ' . $baseUnit->unitId, $upgrade->upgradesFrom)) {
+                    continue;
+                }
+                if ($baseUnit->armorType === $upgrade->armorType && $baseUnit->attackType === $upgrade->attackType) {
+                    $baseUnit->addSameTypeUpgrade($upgrade);
+                }
+                $units->add($upgrade);
             }
         }
 
