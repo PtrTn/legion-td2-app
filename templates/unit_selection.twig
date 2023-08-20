@@ -26,8 +26,20 @@
                     <div class="col-1">
                         <input type="checkbox" id="{{ choice.value }}" name="{{ field_name(form.units) }}" value="{{ choice.value }}"/>
                         <label for="{{ choice.value }}" class="d-flex flex-column justify-content-center align-items-center">
-                            <img width="75px" height="75px" class="border border-primary rounded" alt="{{ choice.data.name }}" src="https://cdn.legiontd2.com/{{ choice.data.iconPath }}" />
-                            <span class="text-center">{{ choice.data.name }}</span>
+                            {% if choice.data.hasSameTypeUpgrades %}
+                                <img width="50px" height="50px" class="border border-primary rounded" alt="{{ choice.data.name }}" src="https://cdn.legiontd2.com/{{ choice.data.iconPath }}" />
+                                <div class="row justify-content-center g-0">
+                                    {% for upgrade in choice.data.upgradesTo %}
+                                        <div class="col-auto">
+                                            <img width="25px" height="25px" class="border border-primary rounded" alt="{{ upgrade.name }}" src="https://cdn.legiontd2.com/{{ upgrade.iconPath }}" />
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <span class="text-center">{{ choice.data.name }}</span>
+                            {% else %}
+                                <img width="75px" height="75px" class="border border-primary rounded" alt="{{ choice.data.name }}" src="https://cdn.legiontd2.com/{{ choice.data.iconPath }}" />
+                                <span class="text-center">{{ choice.data.name }}</span>
+                            {% endif %}
                         </label>
                     </div>
                 {% endfor %}

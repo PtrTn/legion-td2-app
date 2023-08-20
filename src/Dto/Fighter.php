@@ -6,6 +6,8 @@ namespace App\Dto;
 
 final class Fighter extends Unit
 {
+    public array $upgradesTo = [];
+
     public function __construct(
         Unit $unit,
         public ?int $goldCost,
@@ -25,5 +27,15 @@ final class Fighter extends Unit
     public function isBaseUnit(): bool
     {
        return empty($this->upgradesFrom);
+    }
+
+    public function hasSameTypeUpgrades(): bool
+    {
+        return count($this->upgradesTo) > 0;
+    }
+
+    public function addSameTypeUpgrade(Fighter $upgrade)
+    {
+        $this->upgradesTo[] = $upgrade;
     }
 }

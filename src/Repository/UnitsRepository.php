@@ -20,14 +20,28 @@ final class UnitsRepository
     }
 
     /** @return Fighter[] */
-    public function getFightersBaseUnitsSortedByGoldCost(): array
+    public function getUniqueFightersSortedByGoldCost(): array
     {
         $fighters = $this->getUnits()->getFighters();
 
-        $baseUnitFighters = array_filter($fighters, fn (Fighter $fighter) => $fighter->isBaseUnit());
-        usort($baseUnitFighters, fn(Fighter $fighterA, Fighter $fighterB) => $fighterA->goldCost <=> $fighterB->goldCost);
+        $baseUnits = array_filter($fighters, fn (Fighter $fighter) => $fighter->isBaseUnit());
+        $upgrades = array_filter($fighters, fn (Fighter $fighter) => !$fighter->isBaseUnit());
+        $uniqueUnits = $baseUnits;
+        foreach ($baseUnits as $baseUnit) {
+            foreach ($upgrades as $upgrade) {
+                if (!in_array('units ' . $baseUnit->unitId, $upgrade->upgradesFrom)) {
+                    continue;
+                }
+                if ($baseUnit->armorType === $upgrade->armorType && $baseUnit->attackType === $upgrade->attackType) {
+                    $baseUnit->addSameTypeUpgrade($upgrade);
+                }
+                $uniqueUnits[] = $upgrade;
+            }
+        }
 
-        return $baseUnitFighters;
+        usort($uniqueUnits, fn(Fighter $fighterA, Fighter $fighterB) => $fighterA->goldCost <=> $fighterB->goldCost);
+
+        return $uniqueUnits;
     }
 
     public function getCreatureById(string $unitId): Creature
