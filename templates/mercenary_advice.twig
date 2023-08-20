@@ -20,7 +20,7 @@
                 <div class="row gy-2 justify-content-around">
                     {% for mercenaryMatchup in mercenaryMatchups %}
                         <div class="col-12">
-                            <div class="row align-items-center pb-2">
+                            <div class="row align-items-center pb-3">
                                 <div class="col-auto">
                                     <h3 class="mb-0">{{ mercenaryMatchup.mercenary.name }}</h3>
                                 </div>
@@ -36,15 +36,14 @@
                                     <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#collapse-{{ mercenaryMatchup.mercenary.shortIdentifier }}" aria-expanded="false" aria-controls="collapseExample">Why?</button>
                                 </div>
                             </div>
-                            <div class="row gy-3 collapse" id="collapse-{{ mercenaryMatchup.mercenary.shortIdentifier }}">
+                            <div class="row collapse" id="collapse-{{ mercenaryMatchup.mercenary.shortIdentifier }}">
                                 {% for matchup in mercenaryMatchup.matchups %}
-                                    <div class="col-auto px-3">
+                                    <div class="col-auto px-3 mb-3">
                                         <div class="d-flex flex-column align-items-center">
-                                            <img width="60px" height="60px" class="border border-primary rounded" alt="{{ matchup.attackingUnit.description }}" src="https://cdn.legiontd2.com/{{ matchup.attackingUnit.iconPath }}" />
-                                            <span class="text-center mt-1">{{ matchup.attackingUnit.name }}</span>
+                                            {% include 'components/fightercard.html.twig' with {'fighter': matchup.attackingUnit, 'type': 'small' } %}
                                             <span class="badge badge-pill bg-{% if matchup.totalModifier >= 0 %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Attack {{ matchup.formattedAttackModifier }} Defense {{ matchup.formattedDefenseModifier }}">
-                                        {{ matchup.formattedTotalModifier }}
-                                    </span>
+                                                {{ matchup.formattedTotalModifier }}
+                                            </span>
                                         </div>
                                     </div>
                                 {% else %}
@@ -66,7 +65,7 @@
                 <div class="row gy-2 justify-content-around">
                     {% for waveMatchup in waveMatchups %}
                         <div class="col-12">
-                            <div class="row align-items-center pb-2">
+                            <div class="row align-items-center pb-3">
                                 <div class="col-auto">
                                     <h3 class="mb-0">Wave {{ waveMatchup.wave.waveNumber }}: {{ waveMatchup.wave.unit.name }}</h3>
                                 </div>
@@ -81,12 +80,13 @@
                                 <div class="col-auto">
                                     <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#collapse-{{ waveMatchup.wave.unit.shortIdentifier }}" aria-expanded="false" aria-controls="collapseExample">Why?</button>
                                 </div>
-                                <div class="row gy-3 collapse" id="collapse-{{ waveMatchup.wave.unit.shortIdentifier }}">
+                            </div>
+                            <div class="row">
+                                <div class="row collapse" id="collapse-{{ waveMatchup.wave.unit.shortIdentifier }}">
                                     {% for matchup in waveMatchup.matchups %}
-                                        <div class="col-auto px-3">
+                                        <div class="col-auto px-3 mb-3">
                                             <div class="d-flex flex-column align-items-center">
-                                                <img width="60px" height="60px" class="border border-primary rounded" alt="{{ matchup.defendingUnit.description }}" src="https://cdn.legiontd2.com/{{ matchup.defendingUnit.iconPath }}" />
-                                                <span class="text-center mt-1">{{ matchup.defendingUnit.name }}</span>
+                                                {% include 'components/fightercard.html.twig' with {'fighter': matchup.defendingUnit, 'type': 'small' } %}
                                                 <span class="badge badge-pill bg-{% if matchup.totalModifier >= 0 %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Attack {{ matchup.formattedAttackModifier }} Defense {{ matchup.formattedDefenseModifier }}">
                                                     {{ matchup.formattedTotalModifier }}
                                                 </span>

@@ -9,6 +9,10 @@
     </div>
     <span class="text-center">{{ fighter.name }}</span>
 {% else %}
-    <img width="75px" height="75px" class="border border-primary rounded" alt="{{ fighter.name }}" src="https://cdn.legiontd2.com/{{ fighter.iconPath }}" />
+    {% if type == 'small' %}
+        <img width="60px" height="60px" class="border border-primary rounded mb-3" alt="{{ fighter.name }}" src="https://cdn.legiontd2.com/{{ fighter.iconPath }}" />
+    {% elseif type == 'large' %}
+        <img width="75px" height="75px" class="border border-primary rounded" alt="{{ fighter.name }}" src="https://cdn.legiontd2.com/{{ fighter.iconPath }}" />
+    {% endif %}
     <span class="text-center">{{ fighter.name }}</span>
 {% endif %}

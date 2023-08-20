@@ -25,7 +25,7 @@
                         {% for matchup in waveMatchup.matchups %}
                             <div class="col-auto pb-2">
                                 <div class="d-flex flex-column align-items-center">
-                                    {% include 'components/fightercard.html.twig' with {'fighter': matchup.attackingUnit } %}
+                                    {% include 'components/fightercard.html.twig' with {'fighter': matchup.attackingUnit, 'type': 'large' } %}
                                     <span class="badge badge-pill bg-success" data-toggle="tooltip" title="Attack {{ matchup.formattedAttackModifier }} Defense {{ matchup.formattedDefenseModifier }}">
                                         {{ matchup.formattedTotalModifier }}
                                     </span>
