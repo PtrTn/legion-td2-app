@@ -40,7 +40,7 @@
                                 {% for matchup in mercenaryMatchup.matchups %}
                                     <div class="col-auto px-3 mb-3">
                                         <div class="d-flex flex-column align-items-center">
-                                            {% include 'components/fightercard.html.twig' with {'fighter': matchup.attackingUnit, 'type': 'small' } %}
+                                            {% include 'partial/fightercard.html.twig' with {'fighter': matchup.attackingUnit, 'type': 'small' } %}
                                             <span class="badge badge-pill bg-{% if matchup.totalModifier >= 0 %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Attack {{ matchup.formattedAttackModifier }} Defense {{ matchup.formattedDefenseModifier }}">
                                                 {{ matchup.formattedTotalModifier }}
                                             </span>
@@ -86,7 +86,7 @@
                                     {% for matchup in waveMatchup.matchups %}
                                         <div class="col-auto px-3 mb-3">
                                             <div class="d-flex flex-column align-items-center">
-                                                {% include 'components/fightercard.html.twig' with {'fighter': matchup.defendingUnit, 'type': 'small' } %}
+                                                {% include 'partial/fightercard.html.twig' with {'fighter': matchup.defendingUnit, 'type': 'small' } %}
                                                 <span class="badge badge-pill bg-{% if matchup.totalModifier >= 0 %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Attack {{ matchup.formattedAttackModifier }} Defense {{ matchup.formattedDefenseModifier }}">
                                                     {{ matchup.formattedTotalModifier }}
                                                 </span>

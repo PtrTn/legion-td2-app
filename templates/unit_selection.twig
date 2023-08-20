@@ -26,7 +26,7 @@
                     <div class="col-1">
                         <input type="checkbox" id="{{ choice.value }}" name="{{ field_name(form.units) }}" value="{{ choice.value }}"/>
                         <label for="{{ choice.value }}" class="d-flex flex-column justify-content-center align-items-center">
-                            {% include 'components/fightercard.html.twig' with {'fighter': choice.data, 'type': 'large' } %}
+                            {% include 'partial/fightercard.html.twig' with {'fighter': choice.data, 'type': 'large' } %}
                         </label>
                     </div>
                 {% endfor %}
