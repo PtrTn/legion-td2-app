@@ -50,6 +50,7 @@ final class UnitsFactory
                 }
                 if ($baseUnit->armorType === $upgrade->armorType && $baseUnit->attackType === $upgrade->attackType) {
                     $baseUnit->addSameTypeUpgrade($upgrade);
+                    continue;
                 }
                 $units->add($upgrade);
             }
